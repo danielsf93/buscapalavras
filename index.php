@@ -1,56 +1,77 @@
-<?php
-$handle = fopen("teste.csv", "r");
-$row = 0;
-$people = [];
-
-while ($line = fgetcsv($handle, 1000, ",")) {
-    if ($row++ == 0) {
-        continue;
-    }
-
-    $people[] = [
-        'palavra' => $line[0],
-        'aumentativo' => $line[1],
-        'diminutivo' => $line[2]
-    ];
-}
-
-fclose($handle);
-
-// Verificar se a caixa de busca foi preenchida
-$searchWord = isset($_GET['search']) ? $_GET['search'] : '';
-
-// Encontrar todas as correspondências à palavra pesquisada
-$results = [];
-foreach ($people as $person) {
-    if ($person['palavra'] === $searchWord) {
-        $results[] = [
-            'aumentativo' => $person['aumentativo'],
-            'diminutivo' => $person['diminutivo']
-        ];
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Busca de Palavras</title>
+    <title>Search CSV</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+        }
+        
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
 </head>
 <body>
-    <form action="" method="get">
-        <label for="search">Palavra:</label>
-        <input type="text" name="search" id="search" value="<?php echo $searchWord; ?>">
-        <input type="submit" value="Buscar">
+    <h1>Search CSV</h1>
+    <form method="GET">
+        <label for="search">Search Frequency:</label>
+        <input type="text" name="search" id="search" placeholder="Enter frequency">
+        <input type="submit" value="Search">
     </form>
 
-    <?php if (!empty($results)): ?>
-        <h2>Resultados para "<?php echo $searchWord; ?>":</h2>
-        <?php foreach ($results as $result): ?>
-            <p>Aumentativo: <?php echo $result['aumentativo']; ?></p>
-            <p>Diminutivo: <?php echo $result['diminutivo']; ?></p>
-            <hr>
-        <?php endforeach; ?>
-    <?php endif; ?>
+    <?php
+    if (!empty($_GET['search'])) {
+        $search = $_GET['search'];
+        $results = [];
+        
+        $file = fopen('sked-a23.csv', 'r');
+        
+        if ($file) {
+            $header = fgetcsv($file, 0, "\t");
+            
+            $frequencyColumnIndex = array_search('kHz:75', $header);
+            
+            while ($row = fgetcsv($file, 0, "\t")) {
+                $frequency = $row[$frequencyColumnIndex];
+                
+                if (stripos($frequency, $search) !== false) {
+                    $results[] = $row;
+                }
+            }
+            
+            fclose($file);
+        }
+        
+        if (!empty($results)) {
+            echo '<h2>Resultados para a frequência "'.$search.'":</h2>';
+            
+            echo '<table>';
+            echo '<tr>';
+            foreach ($header as $column) {
+                echo '<th>'.$column.'</th>';
+            }
+            echo '</tr>';
+            
+            foreach ($results as $result) {
+                echo '<tr>';
+                foreach ($result as $value) {
+                    echo '<td>'.$value.'</td>';
+                }
+                echo '</tr>';
+            }
+            
+            echo '</table>';
+        } else {
+            echo 'Nenhum resultado encontrado para a frequência "'.$search.'".';
+        }
+    }
+    ?>
 </body>
 </html>
