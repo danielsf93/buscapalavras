@@ -20,13 +20,14 @@ fclose($handle);
 // Verificar se a caixa de busca foi preenchida
 $searchWord = isset($_GET['search']) ? $_GET['search'] : '';
 
-// Encontrar os resultados correspondentes à palavra pesquisada
+// Encontrar todas as correspondências à palavra pesquisada
 $results = [];
 foreach ($people as $person) {
     if ($person['palavra'] === $searchWord) {
-        $results['aumentativo'] = $person['aumentativo'];
-        $results['diminutivo'] = $person['diminutivo'];
-        break;
+        $results[] = [
+            'aumentativo' => $person['aumentativo'],
+            'diminutivo' => $person['diminutivo']
+        ];
     }
 }
 ?>
@@ -45,8 +46,11 @@ foreach ($people as $person) {
 
     <?php if (!empty($results)): ?>
         <h2>Resultados para "<?php echo $searchWord; ?>":</h2>
-        <p>Aumentativo: <?php echo $results['aumentativo']; ?></p>
-        <p>Diminutivo: <?php echo $results['diminutivo']; ?></p>
+        <?php foreach ($results as $result): ?>
+            <p>Aumentativo: <?php echo $result['aumentativo']; ?></p>
+            <p>Diminutivo: <?php echo $result['diminutivo']; ?></p>
+            <hr>
+        <?php endforeach; ?>
     <?php endif; ?>
 </body>
 </html>
