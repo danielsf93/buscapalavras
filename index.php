@@ -20,6 +20,10 @@
 </head>
 <body>
     <h1>Search CSV</h1>
+    <?php
+        $date = gmdate("Y-m-d H:i:s"); // Obtém a data e hora internacional
+        echo '<p>Data e hora internacional: ' . $date . '</p>';
+    ?>
     <form method="GET">
         <label for="search">Search Frequency:</label>
         <input type="text" name="search" id="search" placeholder="Enter frequency">
