@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Search CSV</title>
+    <title>Pesquisa por Frequência</title>
     <style>
         table {
             border-collapse: collapse;
@@ -19,15 +19,15 @@
     </style>
 </head>
 <body>
-    <h1>Search CSV</h1>
+    <h1>Pesquisa por Frequência</h1>
     <?php
         $date = gmdate("Y-m-d H:i:s"); // Obtém a data e hora internacional
         echo '<p>Data e hora internacional: ' . $date . '</p>';
     ?>
     <form method="GET">
-        <label for="search">Search Frequency:</label>
-        <input type="text" name="search" id="search" placeholder="Enter frequency">
-        <input type="submit" value="Search">
+        <label for="search">Pesquisar Frequência:</label>
+        <input type="text" name="search" id="search" placeholder="escreva aqui">
+        <input type="submit" value="pesquisar">
     </form>
 
     <?php

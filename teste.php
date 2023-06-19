@@ -1,13 +1,12 @@
-<?php $handle = fopen("teste.csv", "r");$row = 0;
-while ($line = fgetcsv($handle, 1000, ",")) {
-	if ($row++ == 0) {
-		continue;
-	}
-	
-	$people[] = [
-		'palvra' => $line[0],
-		'aumentativo' => $line[1],
-		'diminutivo' => $line[2]
-		
-	];
-}print_r($people);fclose($handle); ?>
+<?php
+$valorDesejado = "549";
+$conteudo = file_get_contents('freq-a23.txt');
+$linhas = explode("\n", $conteudo);
+echo "kHz           Time(UTC) Days  ITU Station                Lang. Target   Remarks" . "\n";
+foreach ($linhas as $linha) {
+  if (preg_match("/\b$valorDesejado\b/", $linha)) {
+    
+	echo $linha . "\n";
+  }
+}
+?>
