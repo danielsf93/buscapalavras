@@ -18,6 +18,39 @@
         }
     </style>
 </head>
+<!DOCTYPE html>
+<html>
+<head>
+ 
+
+<title>Pesquisa de Valor em Arquivo TXT</title>
+</head>
+<body>
+  <h1>Pesquisa de Valor em Arquivo TXT</h1>
+
+  <form method="POST">
+    <label for="valor">Digite o valor a pesquisar:</label>
+    <input type="text" name="valor" id="valor" required>
+    <button type="submit">Pesquisar</button>
+  </form>
+
+  <?php
+  if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $valorDesejado = $_POST['valor'];
+    $conteudo = file_get_contents('freq-a23.txt');
+    $linhas = explode("\n", $conteudo);
+    echo "kHz           Time(UTC) Days  ITU Station                Lang. Target   Remarks" . "\n";
+    foreach ($linhas as $linha) {
+      if (preg_match("/\b$valorDesejado\b/", $linha)) {
+        echo $linha . "<br>";
+      }
+    }
+  }
+  ?>
+
+</body>
+</html>
+
 <body>
     <h1>Pesquisa por Frequência</h1>
     <?php
