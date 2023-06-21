@@ -1,2 +1,4 @@
 # buscapalavras
-Projeto em andamento...
+Desenvolvido por:
+@TalitaVentura16
+@danielsf93
